@@ -1,25 +1,35 @@
-export type Coefficient = {
-  feature: string;
-  coefficient: number;
-  influence: number;
-};
+export interface Coefficient {
+  Feature: string;
+  Coefficient: number;
+  Influence: number;
+}
+
+export interface FairnessGroupMetrics {
+  accuracy: Record<string, number>;
+  selection_rate: Record<string, number>;
+}
+
+export interface FairnessSlice {
+  average_odds_difference: number | null;
+  demographic_parity_difference: number | null;
+  equal_opportunity_difference: number | null;
+  selection_rate_gap: number | null;
+  statistical_parity_ratio: number | null;
+  by_group: FairnessGroupMetrics;
+}
 
 export interface AnalyzeResponse {
   accuracy: number;
-  selection_rate_gap: number;
+  average_odds_difference: number | null;
   bias_flag: boolean;
-  model_type: "logistic" | "tree";
-  equation?: string;
-  coefficients?: Coefficient[];
+  coefficients: Coefficient[];
   decision_logic: string;
-  shap_image: string;
-  error?: string;
-  metrics_by_gender: Record<
-    string,
-    {
-      selection_rate: number;
-      accuracy: number;
-    }
-  >;
+  demographic_parity_difference: number | null;
+  equal_opportunity_difference: number | null;
+  equation: string;
+  fairness_slices: Record<string, FairnessSlice>;
   tree_image?: string;
+  shap_image?: string;
+  model_type: string;
+  selection_rate_gap: number;
 }

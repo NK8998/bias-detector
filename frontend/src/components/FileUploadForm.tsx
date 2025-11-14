@@ -1,4 +1,3 @@
-import { GLASS_CARD } from "../util/util";
 import { ModelToggle } from "./ModelToggle";
 import { useQuery } from "@tanstack/react-query";
 import { BackendService } from "../services/BackendService";
@@ -24,45 +23,55 @@ export const FileUploadForm = ({
   });
 
   return (
-    <div className={`p-8 space-y-6 ${GLASS_CARD} w-full mx-auto`}>
-      <h2 className='text-3xl font-bold text-white text-center'>
+    <div className='p-8 space-y-6 bg-white border border-gray-400 border-dashed rounded-xl shadow-sm w-full mx-auto'>
+      <h2 className='text-3xl font-bold text-black text-center'>
         Start Global Analysis
       </h2>
 
+      {/* File Upload */}
       <div>
-        <label className='block text-gray-300 mb-2'>
+        <label className='block text-gray-700 mb-2'>
           1. Upload Dataset (CSV)
         </label>
+
         <input
           type='file'
           accept='.csv'
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-          className='block w-full text-sm text-gray-400
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-500/10 file:text-blue-400
-                        hover:file:bg-blue-500/20'
+          className='
+            block w-full text-sm text-gray-800
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-md file:border file:border-gray-300
+            file:bg-gray-100 file:text-gray-700
+            hover:file:bg-gray-200
+          '
           required
         />
       </div>
 
+      {/* Model Type */}
       <div>
-        <label className='block text-gray-300 mb-2'>2. Select Model Type</label>
+        <label className='block text-gray-700 mb-2'>2. Select Model Type</label>
         <ModelToggle modelType={modelType} setModelType={setModelType} />
       </div>
 
+      {/* Submit */}
       <button
         type='submit'
         disabled={isLoading}
-        className='w-full py-3 rounded-xl bg-teal-600 text-white font-bold text-lg hover:bg-teal-700 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed'
+        className='
+          w-full py-3 rounded-md bg-black text-white font-semibold
+          hover:bg-gray-900 transition-colors
+          disabled:bg-gray-600 disabled:cursor-not-allowed
+        '
       >
         {isLoading ? "Analyzing Data..." : "Run Fairness Analysis"}
       </button>
 
+      {/* Error */}
       {isError && (
-        <div className='p-3 bg-red-800/30 text-red-300 rounded-lg text-sm'>
-          Error: {error.message}
+        <div className='p-3 bg-red-100 text-red-700 rounded-md text-sm border border-red-300'>
+          Error: {error?.message}
         </div>
       )}
     </div>

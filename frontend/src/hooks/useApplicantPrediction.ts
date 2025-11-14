@@ -54,29 +54,29 @@ export const useApplicantPrediction = (
     let intercept = 0;
 
     const weightedSum = coefficients.reduce((sum, c) => {
-      if (c.feature === "intercept") {
-        intercept = c.coefficient;
+      if (c.Feature === "intercept") {
+        intercept = c.Coefficient;
         return sum;
       }
 
-      const mapped = FEATURE_MAP[c.feature as FeatureMapKey];
+      const mapped = FEATURE_MAP[c.Feature as FeatureMapKey];
       if (!mapped) return sum;
 
       const raw = inputs[mapped];
 
       // Scaling logic
       const scaled =
-        c.feature === "income_proxy"
+        c.Feature === "income_proxy"
           ? raw / 100000
-          : c.feature === "loan_amount"
+          : c.Feature === "loan_amount"
           ? raw / 20000
-          : c.feature === "credit amount"
+          : c.Feature === "credit amount"
           ? raw / 100
-          : c.feature === "age"
+          : c.Feature === "age"
           ? raw / 70
           : raw;
 
-      return sum + c.coefficient * scaled;
+      return sum + c.Coefficient * scaled;
     }, 0);
 
     const logit = weightedSum + intercept;

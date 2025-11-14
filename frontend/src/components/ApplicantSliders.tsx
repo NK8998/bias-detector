@@ -1,7 +1,5 @@
 import React from "react";
-import { GLASS_CARD } from "../util/util";
 
-// The shape of the inputs controlled by your sliders
 export interface ApplicantInputs {
   income: number;
   loanAmount: number;
@@ -36,25 +34,31 @@ export const ApplicantSliders: React.FC<ApplicantSlidersProps> = ({
     step?: number;
     displayUnit?: string;
   }> = ({ name, label, min, max, step, displayUnit = "" }) => (
-    <div className='space-y-1'>
-      <label className='text-gray-300 text-sm font-medium flex justify-between'>
+    <div className='space-y-2'>
+      <label className='text-sm font-semibold text-gray-800 flex justify-between'>
         <span>{label}</span>
-        <span className='font-mono text-blue-400'>
+        <span className='font-mono text-black'>
           {inputs[name].toFixed(0) + displayUnit}
         </span>
       </label>
 
       {name === "gender_Male" ? (
-        <label className='relative inline-flex items-center cursor-pointer'>
+        <label className='inline-flex items-center cursor-pointer'>
           <input
             type='checkbox'
             name={name}
             checked={inputs[name] === 1}
             onChange={handleSliderChange}
-            className='sr-only peer'
+            className='sr-only'
           />
-          <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-          <span className='ml-3 text-sm font-medium text-gray-300'>
+          <div className='w-11 h-6 bg-gray-300 rounded-full relative transition'>
+            <div
+              className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-black transition-transform ${
+                inputs[name] === 1 ? "translate-x-5" : ""
+              }`}
+            />
+          </div>
+          <span className='ml-3 text-sm font-medium text-gray-900'>
             {inputs[name] === 1 ? "Male" : "Female/Other"}
           </span>
         </label>
@@ -67,15 +71,15 @@ export const ApplicantSliders: React.FC<ApplicantSlidersProps> = ({
           step={step}
           value={inputs[name]}
           onChange={handleSliderChange}
-          className='w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg'
+          className='w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer'
         />
       )}
     </div>
   );
 
   return (
-    <div className={`p-6 space-y-6 ${GLASS_CARD}`}>
-      <h3 className='text-2xl font-bold text-white'>Hypothetical Applicant</h3>
+    <div className='p-6 space-y-6 bg-white border border-gray-400 border-dashed rounded-xl shadow-sm'>
+      <h3 className='text-2xl font-bold text-black'>Hypothetical Applicant</h3>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Slider
@@ -104,7 +108,7 @@ export const ApplicantSliders: React.FC<ApplicantSlidersProps> = ({
         <Slider name='age' label='Age' min={18} max={70} step={1} />
       </div>
 
-      <div className='pt-4 border-t border-gray-700'>
+      <div className='pt-4 border-t border-gray-300 border-dashed'>
         <Slider name='gender_Male' label='Gender (Sensitive Feature)' />
       </div>
     </div>

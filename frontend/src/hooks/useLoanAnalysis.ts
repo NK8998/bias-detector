@@ -22,12 +22,12 @@ export const useLoanAnalysis = (
     accuracy: data?.accuracy,
     biasFlag: data?.bias_flag,
     selectionRateGap: data?.selection_rate_gap,
-    metricsByGender: data?.metrics_by_gender,
     shapImage: data?.shap_image,
     modelTypeReturned: data?.model_type,
     decisionLogic: data?.decision_logic,
     equation: data?.equation,
     raw: data,
     treeImage: data?.tree_image,
+    fairnessSlices: data?.fairness_slices,
   };
 };

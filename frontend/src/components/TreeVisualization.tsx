@@ -5,7 +5,7 @@ export interface ApplicantInputs {
   loanAmount: number;
   credit: number;
   age: number;
-  gender_Male: number; // 0 or 1
+  gender_Male: number;
 }
 
 export interface TreeRuleStep {
@@ -28,12 +28,12 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
   const path: TreeRuleStep[] = [];
   let prediction: "Approved" | "Rejected" = "Rejected";
 
-  // Constants (can be pulled from API later)
+  // Thresholds (can be API controlled later)
   const creditThreshold = 60;
   const incomeThreshold = 55000;
   const loanThreshold = 10000;
 
-  // ---- Decision Path ----
+  // Build Decision Path
   if (inputs.credit >= creditThreshold) {
     path.push({
       rule: `Credit Score ≥ ${creditThreshold}`,
@@ -43,14 +43,14 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
 
     if (inputs.income >= incomeThreshold) {
       path.push({
-        rule: `Income ≥ $${incomeThreshold / 1000}k`,
+        rule: `Income ≥ ${incomeThreshold}`,
         result: "True",
         value: inputs.income,
       });
       prediction = "Approved";
     } else {
       path.push({
-        rule: `Income ≥ $${incomeThreshold / 1000}k`,
+        rule: `Income ≥ ${incomeThreshold}`,
         result: "False",
         value: inputs.income,
       });
@@ -62,92 +62,94 @@ export const TreeVisualization: React.FC<TreeVisualizationProps> = ({
       result: "False",
       value: inputs.credit,
     });
-    // This branch always rejects regardless of loanAmount
     prediction = "Rejected";
   }
 
   return (
-    <div className='space-y-6'>
-      <h5 className='text-xl font-bold text-blue-300 border-b border-blue-600/50 pb-2'>
-        Decision Path Flowchart (If/Then Logic)
+    <div className='space-y-6 text-black'>
+      {/* Header */}
+      <h5 className='text-xl font-semibold border-b border-gray-300 pb-2'>
+        Decision Path (If / Then Evaluation)
       </h5>
 
       {/* Decision Tree Text */}
-      <div className='p-4 bg-gray-800 rounded-lg text-sm font-mono text-gray-300  overflow-y-auto'>
-        <pre>
+      <div className='p-4 bg-gray-100 rounded border border-gray-300 text-sm font-mono text-black'>
+        <pre className='whitespace-pre-wrap'>
           {decisionLogicText || "Decision tree structure not available."}
         </pre>
       </div>
 
-      {/*Visual tree path*/}
-      <div className='w-full '>
-        <h5 className='text-xl font-bold text-blue-300 border-b border-blue-600/50 pb-2'>
-          Decision Path Visualization
+      {/* Decision Tree Image */}
+      <div>
+        <h5 className='text-xl font-semibold border-b border-gray-300 pb-2'>
+          Decision Tree Visualization
         </h5>
-        <img
-          src={`data:image/png;base64,${treeImageBase64}`}
-          alt='SHAP Summary Plot'
-          className='max-w-full h-auto'
-        />
+
+        {treeImageBase64 ? (
+          <img
+            src={`data:image/png;base64,${treeImageBase64}`}
+            alt='Decision Tree'
+            className='max-w-full h-auto mt-4 border border-gray-300 rounded'
+          />
+        ) : (
+          <p className='text-gray-600 mt-2 text-sm'>
+            Decision tree image not available.
+          </p>
+        )}
       </div>
 
-      <p className='text-gray-400 text-sm'>
-        Below shows the path the current applicant takes:
+      {/* Path Intro */}
+      <p className='text-gray-600 text-sm'>
+        Below is the exact path taken for this applicant:
       </p>
 
       {/* Visual Path */}
       {path.map((step, index) => (
-        <div key={index} className='flex items-start space-x-4'>
+        <div key={index} className='flex items-start space-x-4 pb-6 last:pb-0'>
+          {/* Left Column: Step marker */}
           <div className='flex flex-col items-center'>
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg z-10 ${
-                step.result === "True" ? "bg-green-600" : "bg-red-600"
-              }`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold
+                ${step.result === "True" ? "bg-green-600" : "bg-red-600"}`}
             >
               {step.result === "True" ? "✓" : "✗"}
             </div>
 
             {index < path.length - 1 && (
-              <div className='w-1 bg-gray-700 h-12'></div>
+              <div className='w-1 flex-1 bg-gray-400 mt-1' />
             )}
           </div>
 
+          {/* Right Column: Card */}
           <div
-            className={`p-4 flex-1 border rounded-xl ${
-              step.result === "True"
-                ? "border-green-400 bg-green-600/10"
-                : "border-red-400 bg-red-600/10"
-            }`}
+            className={`p-4 flex-1 rounded border text-sm
+              ${
+                step.result === "True" ? "border-green-600" : "border-red-600"
+              }`}
           >
-            <p className='text-sm text-gray-400'>Rule {index + 1}:</p>
-            <p className='font-semibold text-white'>
-              {step.rule} (Applicant Value: {step.value.toFixed(0)})
+            <p className='text-xs text-gray-600'>Rule {index + 1}</p>
+
+            <p className='font-medium mt-1'>
+              {step.rule}
+              <span className='text-gray-500'>
+                {" "}
+                (Applicant Value: {step.value})
+              </span>
             </p>
 
             <span
-              className={`text-xs font-mono mt-1 inline-block px-3 py-1 rounded-full ${
-                step.result === "True"
-                  ? "bg-green-600/30 text-green-300"
-                  : "bg-red-600/30 text-red-300"
-              }`}
+              className={`inline-block mt-2 px-3 py-1 text-xs rounded-full border
+                ${
+                  step.result === "True"
+                    ? "border-green-600 text-green-700"
+                    : "border-red-600 text-red-700"
+                }`}
             >
-              Result: {step.result}
+              {step.result === "True" ? "Approved" : "Rejected"}
             </span>
           </div>
         </div>
       ))}
-
-      {/* Final Decision */}
-      <div className='mt-8 p-6 text-center rounded-2xl bg-gradient-to-r from-teal-800/30 to-blue-800/30 border border-teal-500/50'>
-        <p className='text-lg text-gray-300'>Final Decision</p>
-        <p
-          className={`text-5xl font-extrabold mt-2 ${
-            prediction === "Approved" ? "text-teal-400" : "text-red-400"
-          }`}
-        >
-          {prediction}
-        </p>
-      </div>
     </div>
   );
 };
