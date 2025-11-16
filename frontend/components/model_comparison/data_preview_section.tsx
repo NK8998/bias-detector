@@ -8,6 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Papa from "papaparse";
+import Modal from "../reusables/modal";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Eye } from "lucide-react";
 
 export function DataPreview({ file }: { file: File | null }) {
   const [rows, setRows] = useState<any[]>([]);
@@ -19,7 +22,7 @@ export function DataPreview({ file }: { file: File | null }) {
     Papa.parse(file, {
       header: true,
       complete: (result) => {
-        const data = result.data.slice(0, 7); // limit to 7 rows
+        const data = result.data.slice(0, 20); // limit to 20 rows
         setRows(data);
         setHeaders(Object.keys(data[0] || {}));
       },
@@ -29,7 +32,7 @@ export function DataPreview({ file }: { file: File | null }) {
   if (!file) return null;
 
   return (
-    <div className='w-full overflow-auto border rounded-xl bg-white shadow-sm max-h-80'>
+    <div className='w-full overflow-auto border rounded-xl bg-white shadow-sm max-h-150'>
       <Table>
         <TableHeader>
           <TableRow>
@@ -63,16 +66,83 @@ export default function DataPreviewSection({
   fairModelFile: File | null;
   biasedModelFile: File | null;
 }) {
+  const [biasedModalOpen, setBiasedModalOpen] = useState(false);
+  const [fairModalOpen, setFairModalOpen] = useState(false);
+
   return (
-    <section className='mt-6 flex flex-col  gap-6 w-full max-w-full'>
-      <div className='flex-1'>
-        <h2 className='font-semibold mb-2'>Fair Model Data Preview</h2>
+    <section className='mt-10'>
+      <div className='mb-6'>
+        <h2 className='text-3xl font-extrabold text-gray-800 mb-2'>
+          🔬 Inspect Data Samples
+        </h2>
+        <p className='text-gray-600 max-w-4xl'>
+          Click the cards below to view an expanded preview of the raw CSV data
+          for each model. This is essential for verifying feature names and
+          observing dataset balance (or lack thereof).
+        </p>
+      </div>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-full'>
+        {/* Fair Model Toggle Button */}
+        <Card
+          className='cursor-pointer hover:shadow-lg transition-shadow border-green-200 hover:bg-green-50/50'
+          onClick={() => fairModelFile && setFairModalOpen(true)}
+        >
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-lg font-semibold text-green-600'>
+              Fair Dataset Preview
+            </CardTitle>
+            <Eye className='h-5 w-5 text-green-500' />
+          </CardHeader>
+          <CardContent>
+            <p className='text-sm text-gray-500'>
+              {fairModelFile
+                ? `View the first 50 rows of ${fairModelFile.name}`
+                : "Upload the Fair Dataset first to view."}
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Biased Model Toggle Button */}
+        <Card
+          className='cursor-pointer hover:shadow-lg transition-shadow border-red-200 hover:bg-red-50/50'
+          onClick={() => biasedModelFile && setBiasedModalOpen(true)}
+        >
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-lg font-semibold text-red-600'>
+              Biased Dataset Preview
+            </CardTitle>
+            <Eye className='h-5 w-5 text-red-500' />
+          </CardHeader>
+          <CardContent>
+            <p className='text-sm text-gray-500'>
+              {biasedModelFile
+                ? `View the first 20 rows of ${biasedModelFile.name}`
+                : "Upload the Biased Dataset first to view."}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* --- Modals for Data Preview --- */}
+
+      {/* Fair Model Modal */}
+      <Modal
+        isOpen={fairModalOpen}
+        setIsOpen={setFairModalOpen}
+        title='Fair Dataset Preview'
+      >
         <DataPreview file={fairModelFile} />
-      </div>
-      <div className='flex-1'>
-        <h2 className='font-semibold mb-2'>Biased Model Data Preview</h2>
+      </Modal>
+
+      {/* Biased Model Modal */}
+      <Modal
+        isOpen={biasedModalOpen}
+        setIsOpen={setBiasedModalOpen}
+        title='Biased Dataset Preview'
+      >
         <DataPreview file={biasedModelFile} />
-      </div>
+      </Modal>
     </section>
   );
 }

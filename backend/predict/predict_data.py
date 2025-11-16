@@ -114,7 +114,7 @@ def predict(payload_or_df, model_type="logistic_regression", bias_flag=False):
         single_result = predict_single(payload_or_df, bundle)
         return {
             **single_result,
-            #"model_metrics": bundle["training_metrics"]
+            "model_metrics": bundle["training_metrics"]
         }
     elif isinstance(payload_or_df, pd.DataFrame):
         bulk = predict_bulk(payload_or_df, bundle)
@@ -128,37 +128,19 @@ def predict(payload_or_df, model_type="logistic_regression", bias_flag=False):
 if __name__ == "__main__":
     # Example usage
     sample_payload = {
-        "age": 25,
-        "gender": 1,
-        "job": 1,
-        "income": 600,
-        "education_level": "bachelor",
-        "credit_amount": 300,
-        "duration": 50
+        "no_of_dependents": 4,
+        "education": 2,
+        "self_employed" : 1,
+        "income_annum" : 60000,
+        "loan_amount": 150,
+        "loan_term": 360,
+        "cibil_score": 750,
+        "residential_assets_value" : 300000,
+        "commercial_assets_value" : 2,
+        "luxury_assets_value": 50000,
+        "bank_asset_value": 150000,
     }
 
-    bulk_payload = pd.DataFrame([
-        {
-            "age": 24,
-            "gender": 0,
-            "job": 2,
-            "income": 500,
-            "education_level": "master",
-            "credit_amount": 200,
-            "duration": 40
-        },
-        {
-            "age": 30,
-            "gender": 1,
-            "job": 1,
-            "income": 700,
-            "education_level": "phd",
-            "credit_amount": 400,
-            "duration": 60
-        }
-    ])
 
     result1  = predict(sample_payload, model_type="logistic_regression")
-    result2 = predict(bulk_payload, model_type="logistic_regression")
     print(result1)
-    print(result2)

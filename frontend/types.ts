@@ -47,3 +47,9 @@ export interface BiasReport {
   column_mapping?: Record<string, string>;
   value_mapping?: Record<string, Record<string, number>>;
 }
+
+export interface TestApplicantResult {
+  probability: number;
+  approved: boolean;
+  model_metrics: BiasReport;
+}

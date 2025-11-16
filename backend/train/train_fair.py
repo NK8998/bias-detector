@@ -57,8 +57,6 @@ def encode_categorical(series: pd.Series):
 # ============================================================
 
 def preprocess_training_data(df: pd.DataFrame):
-    df.columns = [c.lower().strip() for c in df.columns]
-
     # Extract columns using flexible matching
     col_dep = find_column(df, COLUMN_MAP["dependents"])
     col_edu = find_column(df, COLUMN_MAP["education"])
@@ -89,6 +87,14 @@ def preprocess_training_data(df: pd.DataFrame):
     X["luxury_assets_value"] = df[col_lux].astype(float)
     X["bank_asset_value"] = df[col_bank].astype(float)
     positive_labels = {"approved"}  # dataset is Approved / Rejected
+
+    X["income_annum_log"] = np.log1p(X["income_annum"])
+    X["loan_amount_log"] = np.log1p(X["loan_amount"])
+
+    X["loan_to_income_ratio"] = X["loan_amount"] / X["income_annum"]
+
+    X["loan_to_income_ratio"].replace([np.inf, -np.inf], np.nan, inplace=True)
+    X["loan_to_income_ratio"].fillna(X["loan_to_income_ratio"].median(), inplace=True)
 
     y_raw = df[col_risk].astype(str).str.strip().str.lower()
     y = y_raw.apply(lambda v: 1 if v in positive_labels else 0)
@@ -205,19 +211,26 @@ def train_and_save_model(csv_path: str, out_dir="./models/fair"):
 
     df = pd.read_csv(csv_path)
 
+    df.columns = [c.lower().strip() for c in df.columns]
     
-    X, y, value_mapping = preprocess_training_data(df)
-
-    num_cols = ['no_of_dependents','income_annum','loan_amount','loan_term',
-            'cibil_score','residential_assets_value',
-            'commercial_assets_value','luxury_assets_value','bank_asset_value']
+    num_cols = [
+        'no_of_dependents',
+        'income_annum',
+        'loan_amount',
+        'loan_term',
+        'cibil_score',
+        'residential_assets_value',
+        'commercial_assets_value',
+        'luxury_assets_value',
+        'bank_asset_value',
+    ]
 
     for col in num_cols:
         df = remove_outliers_iqr(df, col)
 
-    print(X.head())
-    print("--------------------")
-    print(y.head())
+    X, y, value_mapping = preprocess_training_data(df)
+
+    print(X.columns)
 
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42

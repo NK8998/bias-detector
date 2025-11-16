@@ -85,14 +85,12 @@ def predict_bulk():
 @app.route('/predict-single', methods=['POST'])
 def predict_single():
     data = request.json
-    model_type = data.get('model_type', 'logistic')
+    model_type = data.get('model_type', 'logistic_regression')
     bias_flag = request.form.get('bias_flag', 'false').lower() == 'true'
     applicant_data = data.get('applicant_data', {})
 
     if not applicant_data:
         return jsonify({"error": "No applicant data provided."}), 400
-    
-    applicant_data = json.loads(applicant_data)
 
     try:
         result = predict(applicant_data, model_type=model_type, bias_flag=bias_flag)
