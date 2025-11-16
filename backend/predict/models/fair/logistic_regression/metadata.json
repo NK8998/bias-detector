@@ -1,0 +1,242 @@
+{
+    "model_type": "logistic_regression",
+    "overall_accuracy": 0.905152224824356,
+    "selection_rates": {
+        "0": 0.6365740740740741,
+        "1": 0.6303317535545023
+    },
+    "accuracies": {
+        "0": 0.9050925925925926,
+        "1": 0.9052132701421801
+    },
+    "selection_rate_gap": 0.006242320519571742,
+    "demographic_parity_difference": 0.006242320519571742,
+    "statistical_parity_ratio": 0.9901938819474364,
+    "bias_flag": false,
+    "fairness_slices": {
+        "no_of_dependents": {
+            "(4.0, 5.0]": {
+                "count": 170,
+                "accuracy": 0.9058823529411765,
+                "selection_rate": 0.6294117647058823
+            },
+            "(1.0, 3.0]": {
+                "count": 304,
+                "accuracy": 0.9210526315789473,
+                "selection_rate": 0.6052631578947368
+            },
+            "(3.0, 4.0]": {
+                "count": 159,
+                "accuracy": 0.9182389937106918,
+                "selection_rate": 0.6666666666666666
+            },
+            "(-0.001, 1.0]": {
+                "count": 221,
+                "accuracy": 0.8733031674208145,
+                "selection_rate": 0.6515837104072398
+            }
+        },
+        "education": {
+            "(-0.001, 1.0]": {
+                "count": 854,
+                "accuracy": 0.905152224824356,
+                "selection_rate": 0.6334894613583139
+            }
+        },
+        "self_employed": {
+            "(-0.001, 1.0]": {
+                "count": 854,
+                "accuracy": 0.905152224824356,
+                "selection_rate": 0.6334894613583139
+            }
+        },
+        "income_annum": {
+            "(5100000.0, 7500000.0]": {
+                "count": 216,
+                "accuracy": 0.9351851851851852,
+                "selection_rate": 0.6435185185185185
+            },
+            "(7500000.0, 9900000.0]": {
+                "count": 209,
+                "accuracy": 0.8851674641148325,
+                "selection_rate": 0.6411483253588517
+            },
+            "(2600000.0, 5100000.0]": {
+                "count": 212,
+                "accuracy": 0.910377358490566,
+                "selection_rate": 0.6415094339622641
+            },
+            "(199999.999, 2600000.0]": {
+                "count": 217,
+                "accuracy": 0.8894009216589862,
+                "selection_rate": 0.6082949308755761
+            }
+        },
+        "loan_amount": {
+            "(14150000.0, 21575000.0]": {
+                "count": 213,
+                "accuracy": 0.9295774647887324,
+                "selection_rate": 0.6103286384976526
+            },
+            "(7400000.0, 14150000.0]": {
+                "count": 211,
+                "accuracy": 0.9289099526066351,
+                "selection_rate": 0.6350710900473934
+            },
+            "(21575000.0, 38200000.0]": {
+                "count": 214,
+                "accuracy": 0.8785046728971962,
+                "selection_rate": 0.6728971962616822
+            },
+            "(399999.999, 7400000.0]": {
+                "count": 216,
+                "accuracy": 0.8842592592592593,
+                "selection_rate": 0.6157407407407407
+            }
+        },
+        "loan_term": {
+            "(16.0, 20.0]": {
+                "count": 155,
+                "accuracy": 0.9483870967741935,
+                "selection_rate": 0.5483870967741935
+            },
+            "(6.0, 12.0]": {
+                "count": 258,
+                "accuracy": 0.9108527131782945,
+                "selection_rate": 0.6201550387596899
+            },
+            "(12.0, 16.0]": {
+                "count": 176,
+                "accuracy": 0.9659090909090909,
+                "selection_rate": 0.6079545454545454
+            },
+            "(1.999, 6.0]": {
+                "count": 265,
+                "accuracy": 0.8339622641509434,
+                "selection_rate": 0.7132075471698113
+            }
+        },
+        "cibil_score": {
+            "(299.999, 453.0]": {
+                "count": 215,
+                "accuracy": 0.8976744186046511,
+                "selection_rate": 0.004651162790697674
+            },
+            "(591.0, 748.0]": {
+                "count": 213,
+                "accuracy": 0.9906103286384976,
+                "selection_rate": 0.9953051643192489
+            },
+            "(453.0, 591.0]": {
+                "count": 214,
+                "accuracy": 0.7336448598130841,
+                "selection_rate": 0.5420560747663551
+            },
+            "(748.0, 900.0]": {
+                "count": 212,
+                "accuracy": 1.0,
+                "selection_rate": 1.0
+            }
+        }
+    },
+    "sensitive_features": [
+        "education",
+        "self_employed"
+    ],
+    "primary_fairness_axis": "education",
+    "columns": [
+        "no_of_dependents",
+        "education",
+        "self_employed",
+        "income_annum",
+        "loan_amount",
+        "loan_term",
+        "cibil_score",
+        "residential_assets_value",
+        "commercial_assets_value",
+        "luxury_assets_value",
+        "bank_asset_value"
+    ],
+    "value_mapping": {
+        "education": {
+            " Graduate": 0,
+            " Not Graduate": 1
+        },
+        "self_employed": {
+            " No": 0,
+            " Yes": 1
+        }
+    },
+    "logistic_equation": "logit(p) = (-0.0290 * no_of_dependents) + (-0.0221 * education) + (0.0664 * self_employed) + (-1.6132 * income_annum) + (1.2608 * loan_amount) + (-0.8625 * loan_term) + (4.1625 * cibil_score) + (0.0347 * residential_assets_value) + (0.0828 * commercial_assets_value) + (0.2711 * luxury_assets_value) + (0.1131 * bank_asset_value) + (intercept=1.7452)",
+    "logistic_coefficients": [
+        {
+            "Feature": "no_of_dependents",
+            "Coefficient": -0.028987824440713444,
+            "Influence": -1
+        },
+        {
+            "Feature": "education",
+            "Coefficient": -0.022080908642748597,
+            "Influence": -1
+        },
+        {
+            "Feature": "self_employed",
+            "Coefficient": 0.06644303520278645,
+            "Influence": 1
+        },
+        {
+            "Feature": "income_annum",
+            "Coefficient": -1.6131760138141544,
+            "Influence": -1
+        },
+        {
+            "Feature": "loan_amount",
+            "Coefficient": 1.2608281909548618,
+            "Influence": 1
+        },
+        {
+            "Feature": "loan_term",
+            "Coefficient": -0.8625474616713936,
+            "Influence": -1
+        },
+        {
+            "Feature": "cibil_score",
+            "Coefficient": 4.162518762260684,
+            "Influence": 1
+        },
+        {
+            "Feature": "residential_assets_value",
+            "Coefficient": 0.03466719370097185,
+            "Influence": 1
+        },
+        {
+            "Feature": "commercial_assets_value",
+            "Coefficient": 0.08280057069772358,
+            "Influence": 1
+        },
+        {
+            "Feature": "luxury_assets_value",
+            "Coefficient": 0.2710941610108418,
+            "Influence": 1
+        },
+        {
+            "Feature": "bank_asset_value",
+            "Coefficient": 0.11313200422767143,
+            "Influence": 1
+        }
+    ],
+    "decision_tree_rules": null,
+    "feature_order": [
+        "no_of_dependents",
+        "education",
+        "self_employed",
+        "income_annum",
+        "loan_amount",
+        "loan_term",
+        "cibil_score",
+        "residential_assets_value",
+        "commercial_assets_value",
+        "luxury_assets_value",
+        "bank_asset_value"
+    ]
+}
