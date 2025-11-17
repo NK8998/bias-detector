@@ -1,0 +1,271 @@
+{
+    "model_type": "logistic_regression",
+    "overall_accuracy": 0.8957845433255269,
+    "selection_rates": {
+        "0": 0.6435185185185185,
+        "1": 0.6279620853080569
+    },
+    "accuracies": {
+        "0": 0.8935185185185185,
+        "1": 0.8981042654028436
+    },
+    "selection_rate_gap": 0.015556433210461629,
+    "demographic_parity_difference": 0.015556433210461629,
+    "statistical_parity_ratio": 0.9758259742916567,
+    "bias_flag": false,
+    "fairness_slices": {
+        "no_of_dependents": {
+            "(4.0, 5.0]": {
+                "count": 170,
+                "accuracy": 0.9,
+                "selection_rate": 0.6235294117647059
+            },
+            "(1.0, 3.0]": {
+                "count": 304,
+                "accuracy": 0.8980263157894737,
+                "selection_rate": 0.6217105263157895
+            },
+            "(3.0, 4.0]": {
+                "count": 159,
+                "accuracy": 0.9308176100628931,
+                "selection_rate": 0.6540880503144654
+            },
+            "(-0.001, 1.0]": {
+                "count": 221,
+                "accuracy": 0.8642533936651584,
+                "selection_rate": 0.6515837104072398
+            }
+        },
+        "education": {
+            "(-0.001, 1.0]": {
+                "count": 854,
+                "accuracy": 0.8957845433255269,
+                "selection_rate": 0.6358313817330211
+            }
+        },
+        "self_employed": {
+            "(-0.001, 1.0]": {
+                "count": 854,
+                "accuracy": 0.8957845433255269,
+                "selection_rate": 0.6358313817330211
+            }
+        },
+        "income_annum_log": {
+            "(15.445, 15.83]": {
+                "count": 216,
+                "accuracy": 0.9259259259259259,
+                "selection_rate": 0.6435185185185185
+            },
+            "(15.83, 16.108]": {
+                "count": 209,
+                "accuracy": 0.8755980861244019,
+                "selection_rate": 0.6507177033492823
+            },
+            "(14.771, 15.445]": {
+                "count": 212,
+                "accuracy": 0.910377358490566,
+                "selection_rate": 0.6415094339622641
+            },
+            "(12.205, 14.771]": {
+                "count": 217,
+                "accuracy": 0.8709677419354839,
+                "selection_rate": 0.6082949308755761
+            }
+        },
+        "loan_amount_log": {
+            "(16.465, 16.887]": {
+                "count": 213,
+                "accuracy": 0.9295774647887324,
+                "selection_rate": 0.6197183098591549
+            },
+            "(15.817, 16.465]": {
+                "count": 211,
+                "accuracy": 0.933649289099526,
+                "selection_rate": 0.6303317535545023
+            },
+            "(16.887, 17.458]": {
+                "count": 214,
+                "accuracy": 0.8551401869158879,
+                "selection_rate": 0.677570093457944
+            },
+            "(12.898, 15.817]": {
+                "count": 216,
+                "accuracy": 0.8657407407407407,
+                "selection_rate": 0.6157407407407407
+            }
+        },
+        "loan_to_income_ratio": {
+            "(3.475, 4.0]": {
+                "count": 214,
+                "accuracy": 0.8364485981308412,
+                "selection_rate": 0.7102803738317757
+            },
+            "(1.6660000000000001, 2.432]": {
+                "count": 215,
+                "accuracy": 0.9395348837209302,
+                "selection_rate": 0.5395348837209303
+            },
+            "(2.432, 2.943]": {
+                "count": 213,
+                "accuracy": 0.9577464788732394,
+                "selection_rate": 0.6150234741784038
+            },
+            "(2.943, 3.475]": {
+                "count": 212,
+                "accuracy": 0.8490566037735849,
+                "selection_rate": 0.6792452830188679
+            }
+        },
+        "loan_term": {
+            "(16.0, 20.0]": {
+                "count": 155,
+                "accuracy": 0.9483870967741935,
+                "selection_rate": 0.5483870967741935
+            },
+            "(6.0, 12.0]": {
+                "count": 258,
+                "accuracy": 0.9069767441860465,
+                "selection_rate": 0.6317829457364341
+            },
+            "(12.0, 16.0]": {
+                "count": 176,
+                "accuracy": 0.9545454545454546,
+                "selection_rate": 0.5965909090909091
+            },
+            "(1.999, 6.0]": {
+                "count": 265,
+                "accuracy": 0.8150943396226416,
+                "selection_rate": 0.7169811320754716
+            }
+        },
+        "cibil_score": {
+            "(299.999, 453.0]": {
+                "count": 215,
+                "accuracy": 0.8930232558139535,
+                "selection_rate": 0.0
+            },
+            "(591.0, 748.0]": {
+                "count": 213,
+                "accuracy": 0.9906103286384976,
+                "selection_rate": 0.9953051643192489
+            },
+            "(453.0, 591.0]": {
+                "count": 214,
+                "accuracy": 0.7009345794392523,
+                "selection_rate": 0.5560747663551402
+            },
+            "(748.0, 900.0]": {
+                "count": 212,
+                "accuracy": 1.0,
+                "selection_rate": 1.0
+            }
+        }
+    },
+    "sensitive_features": [
+        "education",
+        "self_employed"
+    ],
+    "primary_fairness_axis": "education",
+    "columns": [
+        "no_of_dependents",
+        "education",
+        "self_employed",
+        "loan_term",
+        "cibil_score",
+        "residential_assets_value",
+        "commercial_assets_value",
+        "luxury_assets_value",
+        "bank_asset_value",
+        "income_annum_log",
+        "loan_amount_log",
+        "loan_to_income_ratio"
+    ],
+    "value_mapping": {
+        "education": {
+            " Graduate": 0,
+            " Not Graduate": 1
+        },
+        "self_employed": {
+            " No": 0,
+            " Yes": 1
+        }
+    },
+    "logistic_equation": "logit(p) = (-0.0265 * no_of_dependents) + (-0.0302 * education) + (0.0616 * self_employed) + (-0.8630 * loan_term) + (4.2020 * cibil_score) + (-0.0082 * residential_assets_value) + (0.0594 * commercial_assets_value) + (0.0795 * luxury_assets_value) + (0.0196 * bank_asset_value) + (-0.1467 * income_annum_log) + (0.0083 * loan_amount_log) + (0.5689 * loan_to_income_ratio) + (intercept=1.7605)",
+    "logistic_coefficients": [
+        {
+            "Feature": "no_of_dependents",
+            "Coefficient": -0.026519223629315435,
+            "Influence": -1
+        },
+        {
+            "Feature": "education",
+            "Coefficient": -0.030194708349879185,
+            "Influence": -1
+        },
+        {
+            "Feature": "self_employed",
+            "Coefficient": 0.06159818289246628,
+            "Influence": 1
+        },
+        {
+            "Feature": "loan_term",
+            "Coefficient": -0.8630188294419435,
+            "Influence": -1
+        },
+        {
+            "Feature": "cibil_score",
+            "Coefficient": 4.202021560781397,
+            "Influence": 1
+        },
+        {
+            "Feature": "residential_assets_value",
+            "Coefficient": -0.00818631934333275,
+            "Influence": -1
+        },
+        {
+            "Feature": "commercial_assets_value",
+            "Coefficient": 0.05939213832769748,
+            "Influence": 1
+        },
+        {
+            "Feature": "luxury_assets_value",
+            "Coefficient": 0.07948757163517124,
+            "Influence": 1
+        },
+        {
+            "Feature": "bank_asset_value",
+            "Coefficient": 0.019568190503692844,
+            "Influence": 1
+        },
+        {
+            "Feature": "income_annum_log",
+            "Coefficient": -0.14672343668391877,
+            "Influence": -1
+        },
+        {
+            "Feature": "loan_amount_log",
+            "Coefficient": 0.008325914341347123,
+            "Influence": 1
+        },
+        {
+            "Feature": "loan_to_income_ratio",
+            "Coefficient": 0.5689276125281647,
+            "Influence": 1
+        }
+    ],
+    "decision_tree_rules": null,
+    "feature_order": [
+        "no_of_dependents",
+        "education",
+        "self_employed",
+        "loan_term",
+        "cibil_score",
+        "residential_assets_value",
+        "commercial_assets_value",
+        "luxury_assets_value",
+        "bank_asset_value",
+        "income_annum_log",
+        "loan_amount_log",
+        "loan_to_income_ratio"
+    ]
+}

@@ -17,9 +17,6 @@ import {
 import { Copy, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-/**
- * Small component that displays a logistic equation nicely and allows copy
- */
 export function ModelEquation({ equation }: { equation: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -253,61 +250,69 @@ export default function EquationsBreakdownSection({
 
           {/* Terms Accordion */}
           <Accordion type='single' collapsible className='mb-4'>
-            {fairTerms.map((t) => (
-              <AccordionItem key={t.key} value={t.key}>
-                <AccordionTrigger>
-                  <div className='flex items-center justify-between w-full'>
-                    <div>
-                      <div className='text-sm font-medium'>{t.key}</div>
-                      <div className='text-xs text-gray-600'>{t.short}</div>
-                    </div>
-
-                    <div className='text-right'>
-                      <div
-                        className={`text-sm font-semibold ${
-                          t.sign === "positive"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {t.coeff > 0 ? `+${t.coeff}` : t.coeff}
+            {fairEquation &&
+              fairTerms.map((t) => (
+                <AccordionItem key={t.key} value={t.key}>
+                  <AccordionTrigger>
+                    <div className='flex items-center justify-between w-full'>
+                      <div>
+                        <div className='text-sm font-medium'>{t.key}</div>
+                        <div className='text-xs text-gray-600'>{t.short}</div>
                       </div>
-                      <div className='text-xs text-gray-500'>{t.impact}</div>
-                    </div>
-                  </div>
-                </AccordionTrigger>
 
-                <AccordionContent>
-                  <p className='text-sm text-gray-700 mb-2'>{t.long}</p>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Info className='w-4 h-4 text-gray-500 cursor-pointer' />
-                    </TooltipTrigger>
-                    <TooltipContent className='max-w-sm'>
-                      <p className='text-sm'>
-                        Impact labels:
-                        <br />
-                        <strong>Minor</strong> — small effect on predictions.
-                        <br />
-                        <strong>Moderate</strong> — noticeable effect, worth
-                        inspecting.
-                        <br />
-                        <strong>Major</strong> — dominant effect; consider
-                        feature scaling / encoding checks.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                      <div className='text-right'>
+                        <div
+                          className={`text-sm font-semibold ${
+                            t.sign === "positive"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {t.coeff > 0 ? `+${t.coeff}` : t.coeff}
+                        </div>
+                        <div className='text-xs text-gray-500'>{t.impact}</div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent>
+                    <p className='text-sm text-gray-700 mb-2'>{t.long}</p>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Info className='w-4 h-4 text-gray-500 cursor-pointer' />
+                      </TooltipTrigger>
+                      <TooltipContent className='max-w-sm'>
+                        <p className='text-sm'>
+                          Impact labels:
+                          <br />
+                          <strong>Minor</strong> — small effect on predictions.
+                          <br />
+                          <strong>Moderate</strong> — noticeable effect, worth
+                          inspecting.
+                          <br />
+                          <strong>Major</strong> — dominant effect; consider
+                          feature scaling / encoding checks.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
           </Accordion>
 
-          <div className='text-sm text-gray-700'>
-            <strong>Summary:</strong> The fair model relies heavily on{" "}
-            <em>cibil_score</em> and <em>loan_amount</em> (and income-related
-            features) — these dominate the predictions. Most asset features
-            exert small positive nudges.
-          </div>
+          {fairEquation ? (
+            <div className='text-sm text-gray-700'>
+              <strong>Summary:</strong> The fair model relies heavily on{" "}
+              <em>cibil_score</em> and <em>loan_amount</em> (and income-related
+              features) — these dominate the predictions. Most asset features
+              exert small positive nudges.
+            </div>
+          ) : (
+            <div className='text-sm text-gray-700'>
+              <strong>Summary:</strong> Upload dataset to see equation breakdown
+              summary
+            </div>
+          )}
         </div>
 
         {/* Biased Model Column */}
@@ -331,58 +336,66 @@ export default function EquationsBreakdownSection({
 
           {/* Terms Accordion */}
           <Accordion type='single' collapsible className='mb-4'>
-            {biasedTerms.map((t) => (
-              <AccordionItem key={t.key} value={t.key}>
-                <AccordionTrigger>
-                  <div className='flex items-center justify-between w-full'>
-                    <div>
-                      <div className='text-sm font-medium'>{t.key}</div>
-                      <div className='text-xs text-gray-600'>{t.short}</div>
-                    </div>
-
-                    <div className='text-right'>
-                      <div
-                        className={`text-sm font-semibold ${
-                          t.sign === "positive"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {t.coeff > 0 ? `+${t.coeff}` : t.coeff}
+            {biasedEquation &&
+              biasedTerms.map((t) => (
+                <AccordionItem key={t.key} value={t.key}>
+                  <AccordionTrigger>
+                    <div className='flex items-center justify-between w-full'>
+                      <div>
+                        <div className='text-sm font-medium'>{t.key}</div>
+                        <div className='text-xs text-gray-600'>{t.short}</div>
                       </div>
-                      <div className='text-xs text-gray-500'>{t.impact}</div>
+
+                      <div className='text-right'>
+                        <div
+                          className={`text-sm font-semibold ${
+                            t.sign === "positive"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {t.coeff > 0 ? `+${t.coeff}` : t.coeff}
+                        </div>
+                        <div className='text-xs text-gray-500'>{t.impact}</div>
+                      </div>
                     </div>
-                  </div>
-                </AccordionTrigger>
+                  </AccordionTrigger>
 
-                <AccordionContent>
-                  <p className='text-sm text-gray-700 mb-2'>{t.long}</p>
+                  <AccordionContent>
+                    <p className='text-sm text-gray-700 mb-2'>{t.long}</p>
 
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Info className='w-4 h-4 text-gray-500 cursor-pointer' />
-                    </TooltipTrigger>
-                    <TooltipContent className='max-w-sm'>
-                      <p className='text-sm'>
-                        Note: Coefficients are applied to normalized/scaled
-                        inputs in most pipelines — always check preprocessing
-                        (standardization, encoding) before interpreting raw
-                        magnitudes.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Info className='w-4 h-4 text-gray-500 cursor-pointer' />
+                      </TooltipTrigger>
+                      <TooltipContent className='max-w-sm'>
+                        <p className='text-sm'>
+                          Note: Coefficients are applied to normalized/scaled
+                          inputs in most pipelines — always check preprocessing
+                          (standardization, encoding) before interpreting raw
+                          magnitudes.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
           </Accordion>
 
-          <div className='text-sm text-gray-700'>
-            <strong>Summary:</strong> The biased model gives a substantial
-            positive coefficient to <em>gender</em> and a non-trivial weight to{" "}
-            <em>age</em>. That gender term likely drives most of the demographic
-            parity gap you observed; fix the encoding, preprocess, or apply
-            fairness-aware constraints.
-          </div>
+          {biasedEquation ? (
+            <div className='text-sm text-gray-700'>
+              <strong>Summary:</strong> The biased model gives a substantial
+              positive coefficient to <em>gender</em> and a non-trivial weight
+              to <em>age</em>. That gender term likely drives most of the
+              demographic parity gap you observed; fix the encoding, preprocess,
+              or apply fairness-aware constraints.
+            </div>
+          ) : (
+            <div className='text-sm text-gray-700'>
+              <strong>Summary:</strong> Upload dataset to see equation breakdown
+              summary
+            </div>
+          )}
         </div>
       </div>
     </section>

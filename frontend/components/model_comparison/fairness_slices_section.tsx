@@ -79,7 +79,7 @@ export default function FairnessSlicesSection({
   BiasedModelSlices?: FairnessSlices;
 }) {
   return (
-    <section className='mt-12'>
+    <section className='mt-12 bg-[#efefef] p-1 rounded-lg'>
       {/* Explanation */}
       <Card className='bg-white border shadow-sm mb-8'>
         <CardHeader>

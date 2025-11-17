@@ -6,6 +6,7 @@ import FairnessSlicesSection from "@/components/model_comparison/fairness_slices
 import FileUploadSection from "@/components/model_comparison/file_upload_section";
 import EquationsBreakdownSection from "@/components/model_comparison/model_equations_section";
 import ModelMetricsSection from "@/components/model_comparison/model_metrics_section";
+import VisualizeDatasetsSection from "@/components/model_comparison/visualize_datasets_section";
 import Footer from "@/components/reusables/footer";
 import Navbar from "@/components/reusables/navbar";
 import { Separator } from "@/components/ui/separator"; // Import Separator for visual break
@@ -85,6 +86,13 @@ export default function ModelComparisonPage() {
         <DataPreviewSection
           fairModelFile={fairModelFile}
           biasedModelFile={biasedModelFile}
+        />
+
+        <Separator className='my-8 bg-gray-200' />
+
+        <VisualizeDatasetsSection
+          fairModelFile={fairModelFile ?? undefined}
+          biasedModelFile={biasedModelFile ?? undefined}
         />
 
         <Separator className='my-8 bg-gray-200' />
