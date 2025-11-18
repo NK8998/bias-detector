@@ -3,16 +3,11 @@
 import { useState } from "react";
 import Navbar from "@/components/reusables/navbar";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { BackendService } from "@/services/backend_service";
 import Footer from "@/components/reusables/footer";
@@ -23,12 +18,12 @@ export default function TestApplicantPage() {
     education: 0,
     self_employed: 1,
     income_annum: 60000,
-    loan_amount: 150,
+    loan_amount: 150000,
     loan_term: 360,
     cibil_score: 750,
     residential_assets_value: 300000,
-    commercial_assets_value: 2,
-    luxury_assets_value: 50000,
+    commercial_assets_value: 50000,
+    luxury_assets_value: 20000,
     bank_asset_value: 150000,
   });
 
@@ -65,12 +60,12 @@ export default function TestApplicantPage() {
           and more — then evaluate the model in real time.
         </p>
 
-        {/* Playground Grid */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
           <ApplicantInputs applicant={applicant} update={update} />
           <PredictionPanel result={result} onEvaluate={handleEvaluate} />
         </div>
       </main>
+
       <Footer />
     </div>
   );
@@ -91,78 +86,86 @@ export function ApplicantInputs({
         </CardTitle>
       </CardHeader>
 
-      <CardContent className='space-y-6'>
+      <CardContent className='space-y-8'>
         {/* Dependents */}
         <Field label='Number of Dependents'>
           <Input
             type='number'
+            min={0}
+            max={15}
             value={applicant.no_of_dependents}
             onChange={(e) => update("no_of_dependents", Number(e.target.value))}
           />
         </Field>
 
         {/* Education */}
-        <Field label='Education Level (0 = None, 1 = Graduate)'>
-          <Slider
-            defaultValue={[applicant.education]}
-            min={0}
-            max={1}
-            step={1}
-            onValueChange={(v) => update("education", v[0])}
+        <Field label='Graduate?'>
+          <SwitchRow
+            checked={applicant.education === 1}
+            onChange={(v) => update("education", v ? 1 : 0)}
+            text={applicant.education === 1 ? "Yes" : "No"}
           />
         </Field>
 
         {/* Self Employed */}
-        <Field label='Self-employed (0/1)'>
-          <Slider
-            defaultValue={[applicant.self_employed]}
-            min={0}
-            max={1}
-            step={1}
-            onValueChange={(v) => update("self_employed", v[0])}
+        <Field label='Self-employed?'>
+          <SwitchRow
+            checked={applicant.self_employed === 1}
+            onChange={(v) => update("self_employed", v ? 1 : 0)}
+            text={applicant.self_employed === 1 ? "Yes" : "No"}
           />
         </Field>
 
-        {/* Income */}
+        {/* Annual Income */}
         <Field label='Annual Income (KES)'>
-          <Input
-            type='number'
-            value={applicant.income_annum}
-            onChange={(e) => update("income_annum", Number(e.target.value))}
+          <Slider
+            value={[applicant.income_annum]}
+            min={0}
+            max={5000000}
+            step={10000}
+            onValueChange={(v) => update("income_annum", v[0])}
           />
+          <Value>{applicant.income_annum.toLocaleString()} KES</Value>
         </Field>
 
         {/* Loan Amount */}
         <Field label='Loan Amount (KES)'>
-          <Input
-            type='number'
-            value={applicant.loan_amount}
-            onChange={(e) => update("loan_amount", Number(e.target.value))}
+          <Slider
+            value={[applicant.loan_amount]}
+            min={0}
+            max={2000000}
+            step={5000}
+            onValueChange={(v) => update("loan_amount", v[0])}
           />
+          <Value>{applicant.loan_amount.toLocaleString()} KES</Value>
         </Field>
 
         {/* Loan Term */}
-        <Field label='Loan Term (months)'>
-          <Input
-            type='number'
-            value={applicant.loan_term}
-            onChange={(e) => update("loan_term", Number(e.target.value))}
+        <Field label='Loan Term (Months)'>
+          <Slider
+            value={[applicant.loan_term]}
+            min={6}
+            max={480}
+            step={6}
+            onValueChange={(v) => update("loan_term", v[0])}
           />
+          <Value>{applicant.loan_term} months</Value>
         </Field>
 
         {/* CIBIL Score */}
         <Field label='CIBIL Score'>
           <Slider
-            defaultValue={[applicant.cibil_score]}
+            value={[applicant.cibil_score]}
             min={300}
             max={900}
             step={1}
             onValueChange={(v) => update("cibil_score", v[0])}
           />
+          <Value>{applicant.cibil_score}</Value>
         </Field>
 
-        {/* Asset Values */}
-        <Field label='Residential Assets Value'>
+        {/* Residential Assets */}
+        <Field label='Residential Assets Value (KES)'>
           <Input
             type='number'
             value={applicant.residential_assets_value}
@@ -172,7 +175,8 @@ export function ApplicantInputs({
           />
         </Field>
 
-        <Field label='Commercial Assets Value'>
+        {/* Commercial Assets */}
+        <Field label='Commercial Assets Value (KES)'>
           <Input
             type='number'
             value={applicant.commercial_assets_value}
@@ -182,7 +186,8 @@ export function ApplicantInputs({
           />
         </Field>
 
-        <Field label='Luxury Assets Value'>
+        {/* Luxury Assets */}
+        <Field label='Luxury Assets Value (KES)'>
           <Input
             type='number'
             value={applicant.luxury_assets_value}
@@ -192,7 +197,8 @@ export function ApplicantInputs({
           />
         </Field>
 
-        <Field label='Bank Asset Value'>
+        {/* Bank Assets */}
+        <Field label='Bank Asset Value (KES)'>
           <Input
             type='number'
             value={applicant.bank_asset_value}
@@ -215,6 +221,27 @@ function Field({
     <div className='flex flex-col space-y-2'>
       <Label className='font-medium'>{label}</Label>
       {children}
+    </div>
+  );
+}
+
+function Value({ children }: { children: React.ReactNode }) {
+  return <p className='text-sm text-gray-600'>{children}</p>;
+}
+
+function SwitchRow({
+  checked,
+  onChange,
+  text,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  text: string;
+}) {
+  return (
+    <div className='flex items-center space-x-3'>
+      <Switch checked={checked} onCheckedChange={onChange} />
+      <span className='text-sm text-gray-700'>{text}</span>
     </div>
   );
 }
